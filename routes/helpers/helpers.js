@@ -1,15 +1,13 @@
-// const fs = require('fs/promises')
-
 const { readFile, writeFile } = require("fs/promises");
 const path = require("path");
 
-const contactsPath = path.resolve("contacts.json");
-
+const contactsPath = path.resolve("routes", "api", "contacts.json");
 /**
  * @returns {Promise<Array<object>>} - Contacts Array
  */
 async function listContacts() {
   try {
+    console.log("listContacts");
     return await JSON.parse(await readFile(contactsPath));
   } catch (error) {
     console.log(error);
@@ -62,7 +60,7 @@ async function removeContact(contactId) {
  * @param {string} phone
  * @returns {Promise<object>} addContact
  */
-async function addContact({ name, email, phone }) {
+async function addContact(name, email, phone) {
   try {
     const contacts = await listContacts(contactsPath);
 
@@ -90,37 +88,9 @@ async function addContact({ name, email, phone }) {
   }
 }
 
-/**
- * @param {string} contactId
- * @param {'object'} body
- * @returns {'object'} - updated contact
- */
-const updateContact = async (contactId, body) => {
-  try {
-    if (!Object.keys(body).length) {
-      return undefined;
-    }
-    const contacts = await listContacts();
-
-    const updateContactIndex = contacts.findIndex(
-      (item) => item.id === contactId
-    );
-
-    if (updateContactIndex === -1) {
-      console.log(`No contact with id = ${contactId}`);
-      return undefined;
-    }
-
-    return { ...contacts[updateContactIndex], ...body };
-  } catch (error) {
-    console.log("Updating Error", error);
-  }
-};
-
 module.exports = {
   listContacts,
   getContactById,
   removeContact,
   addContact,
-  updateContact,
 };
