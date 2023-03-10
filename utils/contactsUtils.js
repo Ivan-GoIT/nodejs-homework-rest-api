@@ -1,9 +1,7 @@
-// const fs = require('fs/promises')
-
 const { readFile, writeFile } = require("fs/promises");
 const path = require("path");
-
-const contactsPath = path.resolve("contacts.json");
+const { v4: uuidv4 } = require('uuid');
+const contactsPath = path.resolve("models", "contactsModel.json");
 
 /**
  * @returns {Promise<Array<object>>} - Contacts Array
@@ -66,21 +64,9 @@ async function addContact({ name, email, phone }) {
   try {
     const contacts = await listContacts(contactsPath);
 
-    let id = null;
+    const addedContact = { id: uuidv4(), name, email, phone };
 
-    for (let index = 0; index < contacts.length; index++) {
-      if (+contacts[index].id - 1 !== index) {
-        id = String(index + 1);
-        break;
-      }
-      if (index === contacts.length - 1) {
-        id = `${Number(contacts[index].id) + 1}`;
-      }
-    }
-
-    const addedContact = { id, name, email, phone };
-
-    contacts.splice(Number(id) - 1, 0, addedContact);
+    contacts.push(addedContact);
 
     await writeFile(contactsPath, JSON.stringify(contacts));
 
@@ -111,7 +97,13 @@ const updateContact = async (contactId, body) => {
       return undefined;
     }
 
-    return { ...contacts[updateContactIndex], ...body };
+    const newContact = { ...contacts[updateContactIndex], ...body };
+
+    contacts.splice(updateContactIndex, 1, newContact);
+
+    await writeFile(contactsPath, JSON.stringify(contacts));
+
+    return newContact;
   } catch (error) {
     console.log("Updating Error", error);
   }
