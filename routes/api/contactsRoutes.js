@@ -1,4 +1,4 @@
-const express = require("express");
+const { Router } = require("express");
 const {
   getContactsListController,
   getContactByIdController,
@@ -7,13 +7,14 @@ const {
   putContactController,
 } = require("../../controller/contactController.js");
 
-const router = express.Router();
+const router = Router();
 
 router.route("/")
 .get(getContactsListController)
 .post(createContactController);
 
-router.route("/:contactId")
+router
+  .route("/:contactId")
   .delete(deleteContactController)
   .get(getContactByIdController)
   .put(putContactController);

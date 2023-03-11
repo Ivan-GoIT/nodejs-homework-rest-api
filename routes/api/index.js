@@ -1,3 +1,3 @@
-const contactsRouter=require('./contactsRoutes')
+const contactsRoutes=require('./contactsRoutes')
 
-module.exports={contactsRouter}
+module.exports={contactsRoutes}

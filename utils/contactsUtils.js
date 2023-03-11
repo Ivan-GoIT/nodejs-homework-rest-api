@@ -1,6 +1,7 @@
 const { readFile, writeFile } = require("fs/promises");
 const path = require("path");
 const { v4: uuidv4 } = require('uuid');
+
 const contactsPath = path.resolve("models", "contactsModel.json");
 
 /**
@@ -9,8 +10,8 @@ const contactsPath = path.resolve("models", "contactsModel.json");
 async function listContacts() {
   try {
     return await JSON.parse(await readFile(contactsPath));
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log('Read file error');
   }
 }
 
@@ -30,8 +31,8 @@ async function getContactById(contactId) {
       return {};
     }
     return resContact;
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 }
 
@@ -49,8 +50,8 @@ async function removeContact(contactId) {
     await writeFile(contactsPath, JSON.stringify(resContact));
 
     return removedContact;
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 }
 
@@ -71,8 +72,8 @@ async function addContact({ name, email, phone }) {
     await writeFile(contactsPath, JSON.stringify(contacts));
 
     return addedContact;
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 }
 
@@ -104,8 +105,8 @@ const updateContact = async (contactId, body) => {
     await writeFile(contactsPath, JSON.stringify(contacts));
 
     return newContact;
-  } catch (error) {
-    console.log("Updating Error", error);
+  } catch (err) {
+    console.log("Updating error", err);
   }
 };
 
