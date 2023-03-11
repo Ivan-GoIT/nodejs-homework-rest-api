@@ -1,3 +1,3 @@
-const {checkContactById}= require('./contactMiddleware')
+const {checkContactId}= require('./contactMiddleware')
 
-module.exports={checkContactById}
+module.exports={checkContactId}

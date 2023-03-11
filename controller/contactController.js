@@ -1,122 +1,99 @@
 const { readFile, writeFile } = require("fs/promises");
 const { v4: uuidv4 } = require("uuid");
+const { AppError, catchAsync } = require("../utils");
 const { CONTACTS_PATH } = require("../utils/constants/constants");
+const {createContactDataValidator} = require("../utils/contactValidator");
 
-const getContactsListController = async (req, res, next) => {
-  try {
-    const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
-    if (!contactsList) {
-      throw new Error("Contacts list is empty");
+const getContactsListController = catchAsync(async (req, res, next) => {
+  const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
+  if (!contactsList) {
+    return next(new AppError(204, `Contacts list is empty`));
+  }
+  res.status(200).json({
+    contactsList,
+  });
+});
+
+const getContactByIdController = catchAsync(async (req, res, next) => {
+  const { contactId } = req.params;
+  const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
+
+  const contactById = contactsList.find(({ id }) => id === contactId);
+
+  res.status(200).json({
+    contact: contactById,
+  });
+});
+
+const createContactController = catchAsync(async (req, res, next) => {
+  const { error, value } = createContactDataValidator(req.body);
+
+  if (error) {
+    return next(new AppError(400, error.details[0].message));
+  }
+
+  const { name, email, phone } = value;
+
+  const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
+
+  const addedContact = { name, email, phone, id: uuidv4() };
+
+  contactsList.push(addedContact);
+
+  await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
+    if (error) {
+      return next(new AppError(500, `Contact was not added`));
     }
-    res.status(200).json({
-      contactsList,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-const getContactByIdController = async (req, res, next) => {
-  try {
-    const { contactId } = req.params;
-    const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
+  res.status(201).json({ contact: addedContact });
+});
 
-    const contactById = contactsList.find(({ id }) => id === contactId);
-    if (!contactById) {
-      throw new Error(`Invalid Id`);
+const deleteContactController = catchAsync(async (req, res, next) => {
+  const { contactId } = req.params;
+  const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
+
+  const deletedContactIndex = contactsList.findIndex(
+    ({ id }) => id === contactId
+  );
+
+  const deletedContact = contactsList[deletedContactIndex];
+  contactsList.splice(deletedContactIndex, 1);
+
+  await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
+    if (error) {
+      return next(new AppError(500, `Contact was not deleted`));
     }
+  });
 
-    res.status(200).json({
-      contact: contactById,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  res.status(200).json({ contact: deletedContact });
+});
 
-const createContactController = async (req, res, next) => {
-  try {
-    const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
+const putContactController = catchAsync(async (req, res, next) => {
+  const {
+    params: { contactId },
+    body,
+  } = req;
 
-    const addedContact = { ...req.body, id: uuidv4() };
+  const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
 
-    contactsList.push(addedContact);
+  const updateContactIndex = contactsList.findIndex(
+    ({ id }) => id === contactId
+  );
 
-    await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
-      if (error) {
-        throw new Error(`Contact was not added`);
-      }
-    });
+  contactsList[updateContactIndex] = {
+    ...contactsList[updateContactIndex],
+    ...body,
+  };
 
-    res.status(201).json({ contact: addedContact });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-const deleteContactController = async (req, res, next) => {
-  try {
-    const { contactId } = req.params;
-    const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
-
-    const deletedContactIndex = contactsList.findIndex(
-      ({ id }) => id === contactId
-    );
-
-    if (deletedContactIndex === -1) {
-      console.log(`No contact with id = ${contactId}`);
-      return undefined;
+  await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
+    if (error) {
+      return next(new AppError(500, `Contact was not deleted`));
     }
+  });
 
-    const deletedContact = contactsList[deletedContactIndex];
-    contactsList.splice(deletedContactIndex, 1);
-
-    await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
-      if (error) {
-        throw new Error(`Contact was not deleted`);
-      }
-    });
-
-    res.status(200).json({ contact: deletedContact });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-const putContactController = async (req, res, next) => {
-  try {
-    const {
-      params: { contactId },
-      body,
-    } = req;
-
-    const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
-
-    const updateContactIndex = contactsList.findIndex(
-      ({ id }) => id === contactId
-    );
-
-    if (updateContactIndex === -1) {
-      console.log(`No contact with id = ${contactId}`);
-      return undefined;
-    }
-
-    contactsList[updateContactIndex] = {
-      ...contactsList[updateContactIndex],
-      ...body,
-    };
-
-    await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
-      if (error) {
-        throw new Error(`Contact was not deleted`);
-      }
-    });
-
-    res.status(201).json(contactsList[updateContactIndex]);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
+  res.status(201).json(contactsList[updateContactIndex]);
+});
 
 module.exports = {
   getContactsListController,

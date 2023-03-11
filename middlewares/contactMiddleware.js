@@ -1,8 +1,8 @@
 const { readFile } = require("fs/promises");
 const { CONTACTS_PATH } = require("../utils/constants/constants");
+const { AppError, catchAsync} = require("../utils");
 
-exports.checkContactId = async (req, res, next) => {
-  try {
+exports.checkContactId =catchAsync (async (req, res, next) => {
     const { contactId } = req.params;
 
     const contactsFromDB = await JSON.parse(await readFile(CONTACTS_PATH));
@@ -10,13 +10,9 @@ exports.checkContactId = async (req, res, next) => {
     const contact = contactsFromDB.find(({ id }) => id === contactId);
 
     if (!contact) {
-      return res
-        .status(404)
-        .json({ message: `No contact with id = ${contactId}` });
+      return next(new AppError(404, `Invalid Id`));
     }
+
     req.contact = contact;
     next();
-  } catch (err) {
-    next(err);
-  }
-};
+});
