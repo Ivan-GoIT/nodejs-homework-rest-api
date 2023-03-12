@@ -10,7 +10,7 @@ exports.checkContactId =catchAsync (async (req, res, next) => {
     const contact = contactsFromDB.find(({ id }) => id === contactId);
 
     if (!contact) {
-      return next(new AppError(404, `Invalid Id`));
+      return next(new AppError(404, `Not found`));
     }
 
     req.contact = contact;

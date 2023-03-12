@@ -2,7 +2,7 @@ const { readFile, writeFile } = require("fs/promises");
 const { v4: uuidv4 } = require("uuid");
 const { AppError, catchAsync } = require("../utils");
 const { CONTACTS_PATH } = require("../utils/constants/constants");
-const {createContactDataValidator} = require("../utils/contactValidator");
+const { createContactDataValidator } = require("../utils/contactValidator");
 
 const getContactsListController = catchAsync(async (req, res, next) => {
   const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
@@ -42,7 +42,7 @@ const createContactController = catchAsync(async (req, res, next) => {
 
   await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
     if (error) {
-      return next(new AppError(500, `Contact was not added`));
+      return next(new AppError(400, `Contact was not added`));
     }
   });
 
@@ -57,7 +57,6 @@ const deleteContactController = catchAsync(async (req, res, next) => {
     ({ id }) => id === contactId
   );
 
-  const deletedContact = contactsList[deletedContactIndex];
   contactsList.splice(deletedContactIndex, 1);
 
   await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
@@ -66,7 +65,7 @@ const deleteContactController = catchAsync(async (req, res, next) => {
     }
   });
 
-  res.status(200).json({ contact: deletedContact });
+  res.status(200).json({ message: "contact deleted" });
 });
 
 const putContactController = catchAsync(async (req, res, next) => {
@@ -75,16 +74,31 @@ const putContactController = catchAsync(async (req, res, next) => {
     body,
   } = req;
 
+  console.log(body);
+
+  if (!Object.keys(body).length)
+    return next(new AppError(400, "missing fields"));
+
   const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
 
   const updateContactIndex = contactsList.findIndex(
     ({ id }) => id === contactId
   );
 
-  contactsList[updateContactIndex] = {
+  const updatedContact = {
     ...contactsList[updateContactIndex],
     ...body,
   };
+
+  const { id, name, email, phone } = updatedContact;
+
+  const { error, value } = createContactDataValidator({ name, email, phone });
+
+  if (error) {
+    return next(new AppError(400, error.details[0].message));
+  }
+
+  contactsList[updateContactIndex] = { id, ...value };
 
   await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
     if (error) {
