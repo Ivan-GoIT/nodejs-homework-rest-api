@@ -2,7 +2,9 @@ const { readFile, writeFile } = require("fs/promises");
 const { v4: uuidv4 } = require("uuid");
 const { AppError, catchAsync } = require("../utils");
 const { CONTACTS_PATH } = require("../utils/constants/constants");
-const { createContactDataValidator } = require("../utils/contactValidator");
+const { contactValidator } = require("../utils");
+
+const Contact=require('../models/contactsModel.json')
 
 const getContactsListController = catchAsync(async (req, res, next) => {
   const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
@@ -26,7 +28,7 @@ const getContactByIdController = catchAsync(async (req, res, next) => {
 });
 
 const createContactController = catchAsync(async (req, res, next) => {
-  const { error, value } = createContactDataValidator(req.body);
+  const { error, value } = contactValidator.createContactDataValidator(req.body);
 
   if (error) {
     return next(new AppError(400, error.details[0].message));
@@ -92,7 +94,7 @@ const putContactController = catchAsync(async (req, res, next) => {
 
   const { id, name, email, phone } = updatedContact;
 
-  const { error, value } = createContactDataValidator({ name, email, phone });
+  const { error, value } = contactValidator.createContactDataValidator({ name, email, phone });
 
   if (error) {
     return next(new AppError(400, error.details[0].message));

@@ -6,11 +6,11 @@ const {
   deleteContactController,
   putContactController,
 } = require("../../controller/contactController.js");
-const { checkContactId } = require("../../middlewares");
+const { checkContactId,checkCreateContactData } = require("../../middlewares");
 
 const router = Router();
 
-router.route("/").get(getContactsListController).post(createContactController);
+router.route("/").get(getContactsListController).post(checkCreateContactData,createContactController);
 
 router.use("/:contactId", checkContactId);
 router
