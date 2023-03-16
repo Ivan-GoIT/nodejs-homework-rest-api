@@ -1,15 +1,15 @@
 const Contact = require("./schemas/contact");
 
-const getAllContacts = async () => Contact.find();
+const getAllContacts = async () => Contact.find().select('-_id -favorite');
 
-const getContactById = (id) => Contact.findOne({ _id: id });
+const getContactById = async(id) => Contact.findOne({ _id: id });
 
-const createContact = ({ name, email, phone }) =>
+const createContact = async({ name, email, phone }) =>
   Contact.create({ name, email, phone, favorite: false });
 
-  const updateContact=(id,contact)=>Contact.findByIdAndUpdate(id,contact)
+  const updateContact=async(id,contact)=>Contact.findByIdAndUpdate(id,contact)
 
-  const removeContact=(id)=>Contact.findByIdAndRemove({_id:id})
+  const removeContact=async(id)=>Contact.findByIdAndRemove({_id:id})
 
   module.exports={
     getAllContacts,getContactById,createContact,updateContact,removeContact

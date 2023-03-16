@@ -2,7 +2,6 @@ const { readFile } = require("fs/promises");
 const { CONTACTS_PATH } = require("../utils/constants/constants");
 const { AppError, catchAsync, contactValidator } = require("../utils");
 
-
 exports.checkContactId = catchAsync(async (req, res, next) => {
   const { contactId } = req.params;
 
@@ -19,7 +18,12 @@ exports.checkContactId = catchAsync(async (req, res, next) => {
 });
 
 exports.checkCreateContactData = catchAsync(async (req, res, next) => {
-
-  const { error, value } = contactValidator.createContactDataValidator(req.body);
-  console.log("checkCreateContactData error", error, value);
+  const { error, value } = contactValidator.createContactDataValidator(
+    req.body
+  );
+  if (error) {
+    return next(new AppError(400, "Invalid contact data"));
+  }
+  req.body = value;
+  next();
 });

@@ -1,114 +1,87 @@
-const { readFile, writeFile } = require("fs/promises");
-const { v4: uuidv4 } = require("uuid");
-const { AppError, catchAsync } = require("../utils");
-const { CONTACTS_PATH } = require("../utils/constants/constants");
-const { contactValidator } = require("../utils");
-
-const Contact=require('../models/contactsModel.json')
+const { createContact, getAllContacts } = require("../service");
+const { catchAsync } = require("../utils");
 
 const getContactsListController = catchAsync(async (req, res, next) => {
-  const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
-  if (!contactsList) {
-    return next(new AppError(204, `Contacts list is empty`));
-  }
-  res.status(200).json({
-    contactsList,
-  });
+  const contacts = await getAllContacts();
+  // if (!contactsList) {
+  //   return next(new AppError(204, `Contacts list is empty`));
+  // }
+  res.status(200).json({ contacts });
 });
 
 const getContactByIdController = catchAsync(async (req, res, next) => {
-  const { contactId } = req.params;
-  const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
+  // const { contactId } = req.params;
+  // const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
 
-  const contactById = contactsList.find(({ id }) => id === contactId);
+  // const contactById = contactsList.find(({ id }) => id === contactId);
 
   res.status(200).json({
-    contact: contactById,
+    contact: req,
   });
 });
 
 const createContactController = catchAsync(async (req, res, next) => {
-  const { error, value } = contactValidator.createContactDataValidator(req.body);
-
-  if (error) {
-    return next(new AppError(400, error.details[0].message));
-  }
-
-  const { name, email, phone } = value;
-
-  const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
-
-  const addedContact = { name, email, phone, id: uuidv4() };
-
-  contactsList.push(addedContact);
-
-  await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
-    if (error) {
-      return next(new AppError(400, `Contact was not added`));
-    }
-  });
-
-  res.status(201).json({ contact: addedContact });
+  const contact = await createContact(req.body);
+  contact.favorite = undefined;
+  res.status(201).json({ contact });
 });
 
 const deleteContactController = catchAsync(async (req, res, next) => {
-  const { contactId } = req.params;
-  const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
+  // const { contactId } = req.params;
+  // const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
 
-  const deletedContactIndex = contactsList.findIndex(
-    ({ id }) => id === contactId
-  );
+  // const deletedContactIndex = contactsList.findIndex(
+  //   ({ id }) => id === contactId
+  // );
 
-  contactsList.splice(deletedContactIndex, 1);
+  // contactsList.splice(deletedContactIndex, 1);
 
-  await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
-    if (error) {
-      return next(new AppError(500, `Contact was not deleted`));
-    }
-  });
+  // await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
+  //   if (error) {
+  //     return next(new AppError(500, `Contact was not deleted`));
+  //   }
+  // });
 
   res.status(200).json({ message: "contact deleted" });
 });
 
 const putContactController = catchAsync(async (req, res, next) => {
-  const {
-    params: { contactId },
-    body,
-  } = req;
+  // const {
+  //   params: { contactId },
+  //   body,
+  // } = req;
 
-  console.log(body);
+  // if (!Object.keys(body).length)
+  //   return next(new AppError(400, "missing fields"));
 
-  if (!Object.keys(body).length)
-    return next(new AppError(400, "missing fields"));
+  // const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
 
-  const contactsList = await JSON.parse(await readFile(CONTACTS_PATH));
+  // const updateContactIndex = contactsList.findIndex(
+  //   ({ id }) => id === contactId
+  // );
 
-  const updateContactIndex = contactsList.findIndex(
-    ({ id }) => id === contactId
-  );
+  // const updatedContact = {
+  //   ...contactsList[updateContactIndex],
+  //   ...body,
+  // };
 
-  const updatedContact = {
-    ...contactsList[updateContactIndex],
-    ...body,
-  };
+  // const { id, name, email, phone } = updatedContact;
 
-  const { id, name, email, phone } = updatedContact;
+  // const { error, value } = contactValidator.createContactDataValidator({ name, email, phone });
 
-  const { error, value } = contactValidator.createContactDataValidator({ name, email, phone });
+  // if (error) {
+  //   return next(new AppError(400, error.details[0].message));
+  // }
 
-  if (error) {
-    return next(new AppError(400, error.details[0].message));
-  }
+  // contactsList[updateContactIndex] = { id, ...value };
 
-  contactsList[updateContactIndex] = { id, ...value };
+  // await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
+  //   if (error) {
+  //     return next(new AppError(500, `Contact was not deleted`));
+  //   }
+  // });
 
-  await writeFile(CONTACTS_PATH, JSON.stringify(contactsList), (error) => {
-    if (error) {
-      return next(new AppError(500, `Contact was not deleted`));
-    }
-  });
-
-  res.status(201).json(contactsList[updateContactIndex]);
+  res.status(201).json("Contact update");
 });
 
 module.exports = {

@@ -1,8 +1,7 @@
 const Joi = require("joi");
-const PASSWD_REGEX =
-  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\\$%\\^&\\*]).{8,128}$/;
+// const PASSWD_REGEX =
+//   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\\$%\\^&\\*]).{8,128}$/;
 
-console.log("contactValidator PASSWD_REGEX", PASSWD_REGEX);
 
 exports.createContactDataValidator = (data) =>
   Joi.object({
