@@ -14,7 +14,7 @@ const contact = new Schema(
       type: String,
       trim: true,
       lowercase: true,
-      unique: true,
+      unique: [true,'Duplicate email'],
       require: true,
     },
     phone: {
@@ -24,8 +24,9 @@ const contact = new Schema(
     },
     favorite: {
       type: Boolean,
+      select:true,
+      default: false,
       require: true,
-      select:false,
     },
   },
   { versionKey: false, timestamps: false }

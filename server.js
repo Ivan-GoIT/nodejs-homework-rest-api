@@ -7,10 +7,11 @@ const port = process.env.PORT || 3010;
 mongoose
   .connect(process.env.DB_PATH)
   .then((con) => {
-    console.log("DB connected successfully");
+    console.log("Database connection successful");
   })
   .catch(() => {
     console.log(`Can't connect to DB `)
+    process.exit(1)
   });
 
 app.listen(port, () => {
