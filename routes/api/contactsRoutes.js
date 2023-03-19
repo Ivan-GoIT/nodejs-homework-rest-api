@@ -5,18 +5,27 @@ const {
   createContactController,
   deleteContactController,
   putContactController,
+  patchContactFavoriteFieldController,
 } = require("../../controller/contactController.js");
-const { checkContactId } = require("../../middlewares");
+const { checkContactId, checkCreateContactData } = require("../../middlewares");
+const {
+  checkFavoriteFieldInBody,
+  checkUpdateContactData,
+} = require("../../middlewares/contactMiddleware.js");
 
 const router = Router();
 
-router.route("/").get(getContactsListController).post(createContactController);
+router
+  .route("/")
+  .get(getContactsListController)
+  .post(checkCreateContactData, createContactController);
 
 router.use("/:contactId", checkContactId);
 router
   .route("/:contactId")
-  .delete(deleteContactController)
   .get(getContactByIdController)
-  .put(putContactController);
+  .delete(deleteContactController)
+  .put(checkUpdateContactData, putContactController)
+  .patch(checkFavoriteFieldInBody, patchContactFavoriteFieldController);
 
 module.exports = router;
