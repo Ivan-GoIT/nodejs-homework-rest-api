@@ -3,7 +3,7 @@ const { catchAsync } = require("../utils");
 const { updateStatusContact } = require("../utils/updateStatusContact");
 
 const getContactsListController = catchAsync(async (_, res) => {
-  const contacts = await Contact.find().select("-_id -favorite");
+  const contacts = await Contact.find().select("-_id ");
   res.status(200).json({ data: contacts });
 });
 
@@ -21,7 +21,7 @@ const createContactController = catchAsync(async (req, res) => {
   res.status(201).json({ contact });
 });
 
-const deleteContactController = catchAsync(async (req, res, next) => {
+const deleteContactController = catchAsync(async (req, res) => {
   const { contactId } = req.params;
 
   const contact = await Contact.findByIdAndDelete(contactId);
@@ -29,7 +29,7 @@ const deleteContactController = catchAsync(async (req, res, next) => {
   res.status(200).json({ contact, message: "contact deleted" });
 });
 
-const putContactController = catchAsync(async (req, res, next) => {
+const putContactController = catchAsync(async (req, res) => {
   const { contactId } = req.params;
 
   const updatedContact = await Contact.findByIdAndUpdate(contactId, req.body, {
@@ -40,7 +40,7 @@ const putContactController = catchAsync(async (req, res, next) => {
 });
 
 const patchContactFavoriteFieldController = catchAsync(
-  async (req, res, next) => {
+  async (req, res) => {
     const { contactId } = req.params;
     console.log("req.body.favorite ", req.body.favorite);
     const updatedContact = await updateStatusContact(
