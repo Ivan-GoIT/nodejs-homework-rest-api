@@ -1,9 +1,9 @@
-const AppError=require('./AppError')
-const catchAsync=require('./catchAsync')
-const contactValidator=require('./contactValidator')
+const AppError = require("./AppError");
+const catchAsync = require("./catchAsync");
+const contactValidator = require("./contactValidator");
 
-module.exports={
-    AppError,
-    catchAsync,
-    contactValidator,
-}
+module.exports = {
+  AppError,
+  catchAsync,
+  contactValidator,
+};

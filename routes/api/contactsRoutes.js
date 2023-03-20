@@ -1,31 +1,32 @@
 const { Router } = require("express");
 const {
-  getContactsListController,
-  getContactByIdController,
-  createContactController,
-  deleteContactController,
-  putContactController,
-  patchContactFavoriteFieldController,
-} = require("../../controller/contactController.js");
-const { checkContactId, checkCreateContactData } = require("../../middlewares");
+  getContactsList,
+  getContactById,
+  createContact,
+  deleteContact,
+  putContact,
+  patchContactFavoriteField,
+} = require("../../controller/contact");
 const {
+  checkContactId,
+  checkCreateContactData,
   checkFavoriteFieldInBody,
   checkUpdateContactData,
-} = require("../../middlewares/contactMiddleware.js");
+} = require("../../middlewares/contact");
 
 const router = Router();
 
 router
   .route("/")
-  .get(getContactsListController)
-  .post(checkCreateContactData, createContactController);
+  .get(getContactsList)
+  .post(checkCreateContactData, createContact);
 
 router.use("/:contactId", checkContactId);
 router
   .route("/:contactId")
-  .get(getContactByIdController)
-  .delete(deleteContactController)
-  .put(checkUpdateContactData, putContactController)
-  .patch(checkFavoriteFieldInBody, patchContactFavoriteFieldController);
+  .get(getContactById)
+  .delete(deleteContact)
+  .put(checkUpdateContactData, putContact)
+  .patch(checkFavoriteFieldInBody, patchContactFavoriteField);
 
 module.exports = router;
