@@ -1,4 +1,4 @@
-const { ObjectId } = require("bson");
+// const { ObjectId } = require("bson");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -29,10 +29,10 @@ const contactSchema = new Schema(
       default: false,
       require: true,
     },
-    owner: {
-      type: ObjectId,
-      ref: "user",
-    },
+    // owner: {
+    //   type: ObjectId,
+    //   ref: "user",
+    // },
   },
   { versionKey: false, timestamps: false }
 );
