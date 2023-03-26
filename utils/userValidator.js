@@ -31,3 +31,14 @@ exports.signUpUserDataValidator = (data) =>
       "any.required": `missing required "email" field`,
     }),
   }).validate(data);
+
+  exports.loginUserDataValidator = (data) =>
+  Joi.object({
+    password: Joi.string().pattern(PASSWD_REGEX).messages({
+      "string.pattern.base": `Password must contain uppercase and lowercase letters, numbers and symbols`,
+    }),
+    email: Joi.string().email().messages({
+      "string.email": `Email is wrong`,
+    }),
+  }).validate(data);
+

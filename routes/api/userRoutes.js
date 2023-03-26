@@ -1,11 +1,14 @@
 const { Router } = require("express");
-const { createUser } = require("../../controller/user/createUser");
-const { checkCreateUserData } = require("../../middlewares/user");
+const { loginUser, createUser } = require("../../controller/user");
+const {
+  checkCreateUserData,
+  checkLoginUserData,
+} = require("../../middlewares/user");
 
-const router=Router()
+const router = Router();
 
-router
-.route('/register')
-.post(checkCreateUserData,createUser)
+router.route("/register").post(checkCreateUserData, createUser);
 
-module.exports=router
+router.route("/login").post(checkLoginUserData, loginUser);
+
+module.exports = router;

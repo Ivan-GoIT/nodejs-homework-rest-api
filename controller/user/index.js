@@ -1,4 +1,7 @@
-const { createUser } = require("./createUser")
+const { createUser } = require("./createUser");
+const { loginUser } = require("./loginUser");
 
-
-module.exports={createUser,}
+module.exports = {
+  createUser,
+  loginUser,
+};
