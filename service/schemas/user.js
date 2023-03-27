@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const userSubscriptionEnum = require("../../constants/userSubscriptionEnum");
-const { signToken } = require("../../utils");
+const signToken = require("../signToken");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema(

@@ -1,4 +1,5 @@
 const User = require("../../service/schemas/user");
+const { updateToken } = require("../../service");
 const { catchAsync, AppError } = require("../../utils");
 
 exports.loginUser = catchAsync(async (req, res, next) => {
@@ -13,11 +14,13 @@ exports.loginUser = catchAsync(async (req, res, next) => {
   if (!passwordIsValid)
     return next(new AppError(401, "Email or password is wrong"));
 
+  const updatedUser = await updateToken(user._id);
 
-  user.password = undefined;
+  if (!updatedUser) return next(new AppError(503, "Service Unavailable"));
+
 
   res.status(200).json({
-    token:user.token,
-    user:{email:user.email,subscription:user.subscription},
+    token: updatedUser.token,
+    user: updatedUser,
   });
 });
