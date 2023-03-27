@@ -13,10 +13,9 @@ exports.checkUserToken = catchAsync(async (req, res, next) => {
 
   const currentUser = await User.findById(decoded.id);
 
-  if (!currentUser||currentUser.token!==token) return next(new AppError(401, "Not authorized"));
+  if (!currentUser || currentUser.token !== token)
+    return next(new AppError(401, "Not authorized"));
 
-
-  req.user=currentUser
-  next()
-
+  req.user = currentUser;
+  next();
 });

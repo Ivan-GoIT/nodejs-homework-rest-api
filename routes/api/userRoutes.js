@@ -13,10 +13,15 @@ const {
 
 const router = Router();
 
+
 router
-  .post("/register", checkCreateUserData, createUser)
-  .post("/login", checkLoginUserData, loginUser)
-  .get("/logout/:userId", logoutUser)
-  .get("/current/:userId",checkUserToken, currentUser);
+.post("/register", checkCreateUserData, createUser)
+.post("/login", checkLoginUserData, loginUser)
+.get("/logout/:userId", logoutUser)
+
+router.use(checkUserToken)
+
+router.get("/current", currentUser);
+
 
 module.exports = router;
