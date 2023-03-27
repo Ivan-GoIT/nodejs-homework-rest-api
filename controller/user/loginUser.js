@@ -5,7 +5,7 @@ const { catchAsync, AppError } = require("../../utils");
 exports.loginUser = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email }).select("+password -_id");
+  const user = await User.findOne({ email }).select("+password ");
 
   if (!user) return next(new AppError(401, "Email or password is wrong"));
 
@@ -18,9 +18,11 @@ exports.loginUser = catchAsync(async (req, res, next) => {
 
   if (!updatedUser) return next(new AppError(503, "Service Unavailable"));
 
-
   res.status(200).json({
     token: updatedUser.token,
-    user: updatedUser,
+    user: {
+      email: updatedUser.email,
+      subscription: updatedUser.subscription,
+    },
   });
 });

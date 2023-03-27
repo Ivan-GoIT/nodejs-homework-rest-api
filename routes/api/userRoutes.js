@@ -1,14 +1,22 @@
 const { Router } = require("express");
-const { loginUser, createUser } = require("../../controller/user");
+const { 
+  loginUser, 
+  createUser, 
+  logoutUser,
+  currentUser, 
+} = require("../../controller/user");
 const {
   checkCreateUserData,
   checkLoginUserData,
+  checkUserToken,
 } = require("../../middlewares/user");
 
 const router = Router();
 
-router.route("/register").post(checkCreateUserData, createUser);
-
-router.route("/login").post(checkLoginUserData, loginUser);
+router
+  .post("/register", checkCreateUserData, createUser)
+  .post("/login", checkLoginUserData, loginUser)
+  .get("/logout/:userId", logoutUser)
+  .get("/current/:userId",checkUserToken, currentUser);
 
 module.exports = router;
