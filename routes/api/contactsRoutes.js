@@ -13,8 +13,11 @@ const {
   checkFavoriteFieldInBody,
   checkUpdateContactData,
 } = require("../../middlewares/contact");
+const { checkUserToken } = require("../../middlewares/user");
 
 const router = Router();
+
+router.use(checkUserToken)
 
 router
   .route("/")
