@@ -1,10 +1,10 @@
-const Contact = require("../../service/schemas/contact");
+const Contact = require("../../models/contact");
 const { catchAsync, searchOptions } = require("../../utils/index");
 
 exports.getContactsList = catchAsync(async (req, res) => {
   const { limit, page, favorite, name, email, phone } = req.query;
 
-  const searchObj=searchOptions(favorite, name, email, phone)
+  const searchObj = searchOptions(favorite, name, email, phone);
 
   const paginationPage = +page || 1;
   const paginationLimit = +limit || 5;

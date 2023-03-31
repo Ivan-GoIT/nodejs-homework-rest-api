@@ -23,5 +23,7 @@ router.use(checkUserToken)
 
 router.get("/current", currentUser);
 
+router.patch('/avatars', updateAvatar)
+
 
 module.exports = router;

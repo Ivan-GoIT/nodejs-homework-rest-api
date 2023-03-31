@@ -1,4 +1,4 @@
-const User = require("../../service/schemas/user");
+const User = require("../../models/user");
 const { updateToken } = require("../../service");
 const { catchAsync, AppError } = require("../../utils");
 

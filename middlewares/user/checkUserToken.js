@@ -1,6 +1,6 @@
 const { catchAsync, AppError } = require("../../utils");
 const jwt = require("jsonwebtoken");
-const User = require("../../service/schemas/user");
+const User = require("../../models/user");
 
 exports.checkUserToken = catchAsync(async (req, res, next) => {
   const token =
