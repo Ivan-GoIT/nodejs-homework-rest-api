@@ -1,5 +1,5 @@
 const User = require("../../models/user");
-const { updateToken } = require("../../service");
+const { updateToken } = require("../../utils");
 const { catchAsync, AppError } = require("../../utils");
 
 exports.loginUser = catchAsync(async (req, res, next) => {

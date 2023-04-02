@@ -1,4 +1,7 @@
-const multer = require("multer");
+const ImageService = require("../../services/ImageService");
+
+exports.checkUserAvatar = ImageService.upload("avatar");
+
 // const { AppError } = require("../../utils");
 // const uuid = require("uuid").v4;
 
@@ -28,5 +31,3 @@ const multer = require("multer");
 //     fileSize: 5 * 1024 * 1024,
 //   },
 // }).single("avatar");
-
-exports.checkUserAvatar = 

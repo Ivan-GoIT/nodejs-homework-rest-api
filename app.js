@@ -22,8 +22,7 @@ app.all("*", (_, res) => {
   res.status(404).json({ message: "Resourse not found..." });
 });
 
-app.use((err, _, res, __) => {
+module.exports = app.use((err, _, res, __) => {
   res.status(err.status || 500).json({ message: err.message });
 });
 
-module.exports = app;

@@ -5,7 +5,7 @@ const {
   logoutUser,
   currentUser,
   updateUserAvatar,
-} = require("../../controller/user");
+} = require("../../controllers/user");
 const {
   checkCreateUserData,
   checkLoginUserData,
