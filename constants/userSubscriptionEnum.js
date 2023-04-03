@@ -1,7 +1,7 @@
 const userSubscriptionEnum={
     STARTER:'starter',
     PRO:'pro',
-    BUSINESS:'busines',
+    BUSINESS:'business',
 }
 
 module.exports=userSubscriptionEnum

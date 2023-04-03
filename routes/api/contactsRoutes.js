@@ -6,7 +6,7 @@ const {
   deleteContact,
   putContact,
   patchContactFavoriteField,
-} = require("../../controller/contact");
+} = require("../../controllers/contact");
 const {
   checkContactId,
   checkCreateContactData,

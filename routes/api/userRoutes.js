@@ -1,27 +1,29 @@
 const { Router } = require("express");
-const { 
-  loginUser, 
-  createUser, 
+const {
+  loginUser,
+  createUser,
   logoutUser,
-  currentUser, 
-} = require("../../controller/user");
+  currentUser,
+  updateUserAvatar,
+} = require("../../controllers/user");
 const {
   checkCreateUserData,
   checkLoginUserData,
   checkUserToken,
+  checkUserAvatar,
 } = require("../../middlewares/user");
 
 const router = Router();
 
+router
+  .post("/register", checkCreateUserData, createUser)
+  .post("/login", checkLoginUserData, loginUser);
+
+router.use(checkUserToken);
 
 router
-.post("/register", checkCreateUserData, createUser)
-.post("/login", checkLoginUserData, loginUser)
-.get("/logout/:userId", logoutUser)
-
-router.use(checkUserToken)
-
-router.get("/current", currentUser);
-
+  .get("/current", currentUser)
+  .get("/logout/:userId", logoutUser)
+  .patch("/avatars",checkUserAvatar, updateUserAvatar);
 
 module.exports = router;

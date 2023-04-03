@@ -1,4 +1,4 @@
-const Contact = require("../service/schemas/contact")
+const Contact = require("../models/contact");
 
-exports.updateStatusContact=async(contactId,body)=>Contact .findByIdAndUpdate(contactId,{favorite:body},{new:true}) 
-
+exports.updateStatusContact = async (contactId, body) =>
+  Contact.findByIdAndUpdate(contactId, { favorite: body }, { new: true });

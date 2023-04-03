@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const userSubscriptionEnum = require("../../constants/userSubscriptionEnum");
-const signToken = require("../signToken");
+const crypto = require("crypto");
+
+const userSubscriptionEnum = require("../constants/userSubscriptionEnum");
+const signToken = require("../utils");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
@@ -23,6 +25,7 @@ const userSchema = new Schema(
       enum: Object.values(userSubscriptionEnum),
       default: userSubscriptionEnum.STARTER,
     },
+    avatarURL: String,
     token: {
       type: String,
       default: null,
@@ -32,12 +35,17 @@ const userSchema = new Schema(
 );
 
 userSchema.pre("save", async function (next) {
+  if (this.isNew) {
+    const emailHash = crypto.createHash("md5").update(this.email).digest("hex");
+    this.avatarURL = `https://www.gravatar.com/avatar/${emailHash}.jpg?d=monsterid`;
+
+    this.token = signToken(this._id);
+  }
+
   if (!this.isModified("password")) return next();
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
-
-  this.token=signToken(this._id)
 
   next();
 });
