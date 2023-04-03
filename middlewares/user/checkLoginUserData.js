@@ -1,4 +1,4 @@
-const { catchAsync, userValidator, AppError } = require("../../utils");
+const { catchAsync, userValidator, AppError } = require('../../utils');
 
 exports.checkLoginUserData = catchAsync(async (req, _, next) => {
   const { error, value } = userValidator.loginUserDataValidator(req.body);

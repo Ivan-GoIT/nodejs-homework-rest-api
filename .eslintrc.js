@@ -8,5 +8,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
   },
-  rules: {},
-}
+  rules: {
+    'indent': ['warn', 2],
+    'no-unused-vars':['warn']
+  },
+};

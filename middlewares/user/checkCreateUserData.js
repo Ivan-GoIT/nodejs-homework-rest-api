@@ -1,5 +1,5 @@
-const User = require("../../models/user");
-const { catchAsync, userValidator, AppError } = require("../../utils");
+const User = require('../../models/user');
+const { catchAsync, userValidator, AppError } = require('../../utils');
 
 exports.checkCreateUserData = catchAsync(async (req, _, next) => {
   const { error, value } = userValidator.createUserDataValidator(req.body);
@@ -8,7 +8,7 @@ exports.checkCreateUserData = catchAsync(async (req, _, next) => {
 
   const userExists = await User.exists({ email: value.email });
 
-  if (userExists) return next(new AppError(409, "Email in use"));
+  if (userExists) return next(new AppError(409, 'Email in use'));
 
   req.body = value;
 
