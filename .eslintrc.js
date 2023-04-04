@@ -4,9 +4,10 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ['standard', 'prettier'],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
+  plugins: ['prettier'],
   parserOptions: {
-    ecmaVersion: 12,
+    ecmaVersion: 2020,
   },
   rules: {
     'indent': ['warn', 2],
