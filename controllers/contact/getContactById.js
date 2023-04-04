@@ -1,5 +1,5 @@
-const Contact = require("../../models/contact");
-const { catchAsync } = require("../../utils");
+const Contact = require('../../models/contact');
+const { catchAsync } = require('../../utils');
 
 exports.getContactById = catchAsync(async (req, res) => {
   const { contactId } = req.params;

@@ -1,5 +1,5 @@
-const Contact = require("../../models/contact");
-const { catchAsync, searchOptions } = require("../../utils/index");
+const Contact = require('../../models/contact');
+const { catchAsync, searchOptions } = require('../../utils/index');
 
 exports.getContactsList = catchAsync(async (req, res) => {
   const { limit, page, favorite, name, email, phone } = req.query;
@@ -12,7 +12,7 @@ exports.getContactsList = catchAsync(async (req, res) => {
   const skip = (paginationPage - 1) * paginationLimit;
 
   const contacts = await Contact.find(searchObj)
-    .select("-_id -owner")
+    .select('-_id -owner')
     .skip(skip)
     .limit(paginationLimit);
 

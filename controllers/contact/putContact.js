@@ -1,5 +1,5 @@
-const Contact = require("../../models/contact");
-const { catchAsync } = require("../../utils");
+const Contact = require('../../models/contact');
+const { catchAsync } = require('../../utils');
 
 exports.putContact = catchAsync(async (req, res) => {
   const { contactId } = req.params;
@@ -8,5 +8,5 @@ exports.putContact = catchAsync(async (req, res) => {
     new: true,
   });
 
-  res.status(201).json({ contact: updatedContact, message: "Contact update" });
+  res.status(201).json({ contact: updatedContact, message: 'Contact update' });
 });

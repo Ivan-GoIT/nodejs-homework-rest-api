@@ -1,6 +1,6 @@
-const { ObjectId } = require("bson");
-const Contact = require("../../models/contact");
-const { catchAsync, AppError } = require("../../utils");
+const { ObjectId } = require('bson');
+const Contact = require('../../models/contact');
+const { catchAsync, AppError } = require('../../utils');
 
 exports.checkContactId = catchAsync(async (req, _, next) => {
   const { contactId } = req.params;

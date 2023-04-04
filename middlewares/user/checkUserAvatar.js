@@ -1,3 +1,3 @@
-const ImageService = require("../../services/ImageService");
+const ImageService = require('../../services/ImageService');
 
-exports.checkUserAvatar = ImageService.upload("avatar");
+exports.checkUserAvatar = ImageService.upload('avatar');

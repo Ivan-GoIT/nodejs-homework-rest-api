@@ -1,7 +1,5 @@
-const User = require("../../models/user");
-const { catchAsync } = require("../../utils");
-
-
+const User = require('../../models/user');
+const { catchAsync } = require('../../utils');
 
 exports.createUser = catchAsync(async (req, res) => {
   const user = await User.create(req.body);
