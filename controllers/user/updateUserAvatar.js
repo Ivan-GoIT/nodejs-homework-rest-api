@@ -1,7 +1,7 @@
 const User = require('../../models/user');
 const fse = require('fs-extra');
 const path = require('path');
-const ImageService = require('../../services/ImageService');
+const ImageService = require('../../services/imageService');
 const { catchAsync } = require('../../utils');
 
 exports.updateUserAvatar = catchAsync(async (req, res, next) => {
