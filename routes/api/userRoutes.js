@@ -12,12 +12,14 @@ const {
   checkUserToken,
   checkUserAvatar,
 } = require('../../middlewares/user');
+const { verify } = require('jsonwebtoken');
 
 const router = Router();
 
 router
   .post('/register', checkCreateUserData, createUser)
-  .post('/login', checkLoginUserData, loginUser);
+  .post('/login', checkLoginUserData, loginUser)
+  .get('/verify/:verificationToken', verifyUser);
 
 router.use(checkUserToken);
 
