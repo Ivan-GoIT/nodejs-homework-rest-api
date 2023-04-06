@@ -21,6 +21,7 @@ module.exports = class EmailService {
         },
       });
 
+    console.log('email sended');
     return nodemailer.createTransport({
       host: 'sandbox.smtp.mailtrap.io',
       port: 2525,
@@ -53,7 +54,8 @@ module.exports = class EmailService {
   }
 
   async sendHello() {
-    await this.#send('hello ', 'Welcome to our service');
+    console.log(path.join(__dirname, '..', 'views', 'emails', 'hello'));
+    await this.#send('hello', 'Welcome to our service');
   }
 
   async sendPasswordResetInstructions() {

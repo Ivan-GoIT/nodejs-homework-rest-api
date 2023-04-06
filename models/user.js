@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
+const  signToken = require('../utils/signToken');
 const userSubscriptionEnum = require('../constants/userSubscriptionEnum');
-const signToken = require('../utils');
+
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
@@ -30,14 +31,14 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-    verify: {
-      type: Boolean,
-      default: false,
-    },
-    verificationToken: {
-      type: String,
-      required: [true, 'Verify token is required'],
-    },
+    // verify: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+    // verificationToken: {
+    //   type: String,
+    //   required: [true, 'Verify token is required'],
+    // },
   },
   { versionKey: false, timestamps: false }
 );
@@ -47,7 +48,7 @@ userSchema.pre('save', async function (next) {
     const emailHash = crypto.createHash('md5').update(this.email).digest('hex');
     this.avatarURL = `https://www.gravatar.com/avatar/${emailHash}.jpg?d=monsterid`;
 
-    this.token = signToken(this._id);
+    this.token = signToken(this.id);
   }
 
   if (!this.isModified('password')) return next();
