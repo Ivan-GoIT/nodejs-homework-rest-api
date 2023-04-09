@@ -12,7 +12,7 @@ module.exports = class EmailService {
   }
 
   #initTransport() {
-    if (process.env.NODE_ENV === 'production')
+    if (process.env.NODE_ENV === 'development')
       return nodemailer.createTransport({
         service: 'SendGrid',
         auth: {
@@ -21,7 +21,6 @@ module.exports = class EmailService {
         },
       });
 
-    console.log('email sended');
     return nodemailer.createTransport({
       host: 'sandbox.smtp.mailtrap.io',
       port: 2525,
@@ -36,7 +35,6 @@ module.exports = class EmailService {
     const html = pug.renderFile(
       path.join(__dirname, '..', 'views', 'emails', `${template}.pug`),
       {
-        name: this.name,
         url: this.url,
         subject,
       }
@@ -50,11 +48,10 @@ module.exports = class EmailService {
       text: convert(html),
     };
 
-    this.#initTransport().sendMail();
+    this.#initTransport().sendMail(emailConfig);
   }
 
   async sendHello() {
-    console.log(path.join(__dirname, '..', 'views', 'emails', 'hello'));
     await this.#send('hello', 'Welcome to our service');
   }
 

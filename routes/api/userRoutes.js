@@ -5,6 +5,7 @@ const {
   logoutUser,
   currentUser,
   updateUserAvatar,
+  verifikationUser,
 } = require('../../controllers/user');
 const {
   checkCreateUserData,
@@ -19,16 +20,7 @@ const router = Router();
 router
   .post('/register', checkCreateUserData, createUser)
   .post('/login', checkLoginUserData, loginUser)
-  .get('/verify/:verificationToken')
-  .post(
-    '/ping',
-    createUser,
-    (req, res) => {
-      res.status(200).json({
-        message: 'pong',
-      });
-    },
-  );
+  .get('/verify/:verificationToken',verifikationUser);
 
 router.use(checkUserToken);
 
