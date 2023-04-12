@@ -20,7 +20,8 @@ const router = Router();
 router
   .post('/register', checkCreateUserData, createUser)
   .post('/login', checkLoginUserData, loginUser)
-  .get('/verify/:verificationToken',verifikationUser);
+  .get('/verify/:verificationToken',verifikationUser)
+  .post('/verify',verificationUser);
 
 router.use(checkUserToken);
 

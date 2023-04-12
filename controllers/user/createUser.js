@@ -1,17 +1,14 @@
 const User = require('../../models/user');
-const { catchAsync, signToken } = require('../../utils');
+const { catchAsync, signToken, verificationData } = require('../../utils');
 const Email = require('../../services/emailService');
 const uuid = require('uuid').v4;
 
 exports.createUser = catchAsync(async (req, res) => {
   const { email, password } = req.body;
 
-  const verificationToken = signToken(uuid());
+  const { verificationToken, verificationUrl } = verificationData;
 
-  const verificationUrl=`${process.env.BASE_URL}/api/users/verify/${verificationToken}`
-
-
-  const user = await User.create({email, password, verificationToken});
+  const user = await User.create({ email, password, verificationToken });
   const { subscription } = user;
 
   try {

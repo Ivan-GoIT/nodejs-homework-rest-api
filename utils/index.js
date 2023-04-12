@@ -5,6 +5,9 @@ const searchOptions = require('./searchOptions');
 const signToken = require('./signToken');
 const updateToken = require('./updateToken');
 const userValidator = require('./userValidator');
+const verificationData = require('./verificationData');
+
+
 
 module.exports = {
   AppError,
@@ -14,4 +17,5 @@ module.exports = {
   searchOptions,
   signToken,
   updateToken,
+  verificationData,
 };
