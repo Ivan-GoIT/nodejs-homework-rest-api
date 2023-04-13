@@ -1,3 +1,4 @@
+const signToken = require('./signToken');
 const uuid = require('uuid').v4;
 
 const verificationData = () => {

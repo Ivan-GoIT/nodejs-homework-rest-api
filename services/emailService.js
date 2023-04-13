@@ -8,7 +8,7 @@ module.exports = class EmailService {
     this.to = user.email;
     this.name = user.name;
     this.url = url;
-    this.from = `do not answer ${process.env.SENDGRID_FORM}`;
+    this.from = `do not answer <${process.env.SENDGRID_FROM}>`;
   }
 
   #initTransport() {
@@ -17,7 +17,7 @@ module.exports = class EmailService {
         service: 'SendGrid',
         auth: {
           user: process.env.SENDGRID_USERNAME,
-          pass: process.env.SENDGRID_EMAIL_KEY,
+          pass: process.env.SENDGRID_API_KEY,
         },
       });
 
@@ -26,7 +26,7 @@ module.exports = class EmailService {
       port: 2525,
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env,EMAIL_PASSWORD,
+        pass: process.env.EMAIL_PASSWORD,
       },
     });
   }
@@ -41,7 +41,7 @@ module.exports = class EmailService {
     );
 
     const emailConfig = {
-      from: 'do not answer <admin@example.com>',
+      from: this.from,
       to: this.to,
       subject,
       html,
@@ -53,9 +53,5 @@ module.exports = class EmailService {
 
   async sendHello() {
     await this.#send('hello', 'Welcome to our service');
-  }
-
-  async sendPasswordResetInstructions() {
-    await this.#send('passreset', 'Password reset istructions');
   }
 };
