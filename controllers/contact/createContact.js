@@ -1,5 +1,5 @@
-const Contact = require("../../models/contact");
-const { catchAsync } = require("../../utils");
+const Contact = require('../../models/contact');
+const { catchAsync } = require('../../utils');
 
 exports.createContact = catchAsync(async (req, res) => {
   const contact = await Contact.create({

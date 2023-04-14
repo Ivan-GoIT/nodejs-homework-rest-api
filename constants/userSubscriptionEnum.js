@@ -1,7 +1,7 @@
-const userSubscriptionEnum={
-    STARTER:'starter',
-    PRO:'pro',
-    BUSINESS:'business',
-}
+const userSubscriptionEnum = {
+  STARTER: 'starter',
+  PRO: 'pro',
+  BUSINESS: 'business',
+};
 
-module.exports=userSubscriptionEnum
+module.exports = userSubscriptionEnum;

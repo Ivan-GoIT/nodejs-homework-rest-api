@@ -1,4 +1,4 @@
-const { Router } = require("express");
+const { Router } = require('express');
 const {
   getContactsList,
   getContactById,
@@ -6,27 +6,27 @@ const {
   deleteContact,
   putContact,
   patchContactFavoriteField,
-} = require("../../controllers/contact");
+} = require('../../controllers/contact');
 const {
   checkContactId,
   checkCreateContactData,
   checkFavoriteFieldInBody,
   checkUpdateContactData,
-} = require("../../middlewares/contact");
-const { checkUserToken } = require("../../middlewares/user");
+} = require('../../middlewares/contact');
+const { checkUserToken } = require('../../middlewares/user');
 
 const router = Router();
 
-router.use(checkUserToken)
+router.use(checkUserToken);
 
 router
-  .route("/")
+  .route('/')
   .get(getContactsList)
   .post(checkCreateContactData, createContact);
 
-router.use("/:contactId", checkContactId);
+router.use('/:contactId', checkContactId);
 router
-  .route("/:contactId")
+  .route('/:contactId')
   .get(getContactById)
   .delete(deleteContact)
   .put(checkUpdateContactData, putContact)

@@ -10,6 +10,6 @@ module.exports = {
   },
   rules: {
     'indent': ['warn', 2],
-    'no-unused-vars':['warn']
+    'no-unused-vars': ['warn', { 'argsIgnorePattern': '^_' }],
   },
 };

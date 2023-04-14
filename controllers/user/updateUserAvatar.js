@@ -1,16 +1,15 @@
-const User = require("../../models/user");
-const fse = require("fs-extra");
-const path = require("path");
-const ImageService = require("../../services/ImageService");
-const { catchAsync } = require("../../utils");
+const User = require('../../models/user');
+const fse = require('fs-extra');
+const path = require('path');
+const ImageService = require('../../services/imageService');
+const { catchAsync } = require('../../utils');
 
-exports.updateUserAvatar = catchAsync(async (req, res, next) => {
+exports.updateUserAvatar = catchAsync(async (req, res) => {
   const { file, user } = req;
 
-  const avatarURL = await ImageService.save(file, "images", "users", user.id);
+  const avatarURL = await ImageService.save(file, 'images', 'users', user.id);
 
-
-  await fse.remove(path.join("public", user.avatarURL));
+  await fse.remove(path.join('public', user.avatarURL));
 
   await User.findByIdAndUpdate(user.id, { avatarURL });
 

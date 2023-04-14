@@ -1,5 +1,5 @@
-const { catchAsync } = require("../../utils");
-const { updateStatusContact } = require("../../utils/updateStatusContact");
+const { catchAsync } = require('../../utils');
+const { updateStatusContact } = require('../../utils/updateStatusContact');
 
 exports.patchContactFavoriteField = catchAsync(async (req, res) => {
   const { contactId } = req.params;
