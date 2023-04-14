@@ -1,7 +1,7 @@
 const User = require('../../models/user');
 const { catchAsync, AppError } = require('../../utils');
 
-exports.verificationUser = catchAsync(async (req, res, next) => {
+exports.verificationUser = catchAsync(async (req, res) => {
   const { verificationToken } = req.params;
 
   const user = await User.findOneAndUpdate({ verificationToken },{verificationToken:null,verify: true});

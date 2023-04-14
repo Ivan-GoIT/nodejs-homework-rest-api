@@ -14,7 +14,7 @@ exports.loginUser = catchAsync(async (req, res, next) => {
   if (!passwordIsValid)
     return next(new AppError(401, 'Email or password is wrong'));
 
-  const updatedUser = await updateToken(user._id);
+  const updatedUser = await updateToken(user.id);
 
   if (!updatedUser) return next(new AppError(503, 'Service Unavailable'));
 

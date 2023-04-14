@@ -4,7 +4,7 @@ const path = require('path');
 const ImageService = require('../../services/imageService');
 const { catchAsync } = require('../../utils');
 
-exports.updateUserAvatar = catchAsync(async (req, res, next) => {
+exports.updateUserAvatar = catchAsync(async (req, res) => {
   const { file, user } = req;
 
   const avatarURL = await ImageService.save(file, 'images', 'users', user.id);

@@ -1,26 +1,31 @@
 const User = require('../../models/user');
-const { catchAsync, AppError, verificationURL } = require('../../utils');
+const Email = require('../../services/emailService');
 
-exports.verificationUser = catchAsync(async (req, res, next) => {
+const { catchAsync, AppError, verificationData } = require('../../utils');
+
+exports.reverifyUser = catchAsync(async (req, res) => {
   const { email } = req.body;
 
   if (!email) return new AppError(400, 'missing required field email');
 
   const user = await User.findOne({ email });
 
-  if(!user.verify) return new AppError(400, 'Verification has already been passed');
+  if (!user) return new AppError(400, 'Bad Request');
 
-  const { verificationToken, verificationUrl } = verificationData;
+  if (user.verify)
+    return new AppError(400, 'Verification has already been passed');
 
-  user.verificationToken=verificationToken
+  const { verificationToken, verificationUrl } = verificationData();
+
+  user.verificationToken = verificationToken;
 
   await user.save();
 
   try {
-    await new Email(user, verificationURL).sendHello();
+    await new Email(user, verificationUrl).sendHello();
   } catch (error) {
-    console.log('Registration confirmation email not sent'); //status 501
+    console.log('Registration confirmation email not sent');
   }
 
-  res.status(200).json({ message: 'Verification email sent' });
+  res.status(200).json({ email });
 });

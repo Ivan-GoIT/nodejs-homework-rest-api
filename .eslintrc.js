@@ -4,15 +4,12 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
-  plugins: ['prettier'],
+  extends: ['standard', 'prettier'],
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 12,
   },
   rules: {
-    'arrow-parens': ['error', 'as-needed'], 
-    'no-unused-vars': 'error', 
-    const: ['error', 'always'], 
-    quotes: ['error', 'single'], 
+    'indent': ['warn', 2],
+    'no-unused-vars': ['warn', { 'argsIgnorePattern': '^_' }],
   },
 };

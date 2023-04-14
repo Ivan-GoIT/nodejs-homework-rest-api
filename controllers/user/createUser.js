@@ -1,8 +1,9 @@
 const User = require('../../models/user');
-const { catchAsync, signToken, verificationData } = require('../../utils');
+const { catchAsync, verificationData } = require('../../utils');
 const Email = require('../../services/emailService');
 
 exports.createUser = catchAsync(async (req, res) => {
+
   const { email, password } = req.body;
 
   const { verificationToken, verificationUrl } = verificationData();
@@ -13,8 +14,7 @@ exports.createUser = catchAsync(async (req, res) => {
   try {
     await new Email(user, verificationUrl).sendHello()
   } catch (error) {
-    console.log(error)
-    console.log('Registration confirmation email not sent'); //status 501
+    console.log('Registration confirmation email not sent'); 
   }
 
   res.status(201).json({

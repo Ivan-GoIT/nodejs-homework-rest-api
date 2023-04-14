@@ -6,6 +6,7 @@ const {
   currentUser,
   updateUserAvatar,
   verificationUser,
+  reverifyUser,
 } = require('../../controllers/user');
 const {
   checkCreateUserData,
@@ -13,7 +14,6 @@ const {
   checkUserToken,
   checkUserAvatar,
 } = require('../../middlewares/user');
-const { verify } = require('jsonwebtoken');
 
 const router = Router();
 
@@ -21,7 +21,7 @@ router
   .post('/register', checkCreateUserData, createUser)
   .post('/login', checkLoginUserData, loginUser)
   .get('/verify/:verificationToken',verificationUser)
-  .post('/verify',verificationUser);
+  .post('/verify',reverifyUser);
 
 router.use(checkUserToken);
 

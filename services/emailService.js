@@ -12,7 +12,7 @@ module.exports = class EmailService {
   }
 
   #initTransport() {
-    if (process.env.NODE_ENV === 'development')
+    if (process.env.NODE_ENV === 'product')
       return nodemailer.createTransport({
         service: 'SendGrid',
         auth: {
